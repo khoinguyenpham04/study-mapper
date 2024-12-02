@@ -24,7 +24,7 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
   useEffect(() => {
     if (!mapContainer.current) return
 
-    mapboxgl.accessToken = 'pk.eyJ1Ijoia2hvbmd1eWVucGhhbSIsImEiOiJjbTNjMTVoenoxcTY4MnZzY2t5bzRoNHJhIn0._skFXKA9pyXNjaa-tlN_1A'
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
