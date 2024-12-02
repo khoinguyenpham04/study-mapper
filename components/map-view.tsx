@@ -24,6 +24,7 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
   useEffect(() => {
     if (!mapContainer.current) return
 
+    console.log('Mapbox Access Token:', process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN)
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
 
     map.current = new mapboxgl.Map({
