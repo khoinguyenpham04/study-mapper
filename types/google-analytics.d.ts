@@ -1,7 +1,12 @@
 interface Window {
   gtag: (
-    command: 'config' | 'event',
-    targetId: string,
-    config?: Record<string, any>
-  ) => void
+    command: 'event' | 'config',
+    action: string,
+    options: {
+      event_category?: string;
+      event_label?: string;
+      value?: number;
+      [key: string]: any;
+    }
+  ) => void;
 }

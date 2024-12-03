@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Work_Sans } from 'next/font/google';
-import { GoogleAnalytics } from '@/components/analytics'
+import { GoogleAnalytics } from '@/components/analytics';
 
-// Initialize the fonts
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
