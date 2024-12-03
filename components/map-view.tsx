@@ -34,11 +34,18 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
       zoom: 15,
       pitch: 45,
       bearing: 0,
-      antialias: true
+      antialias: true,
     })
 
     map.current.on('load', () => {
       const map3D = map.current!
+      
+      // Disable road labels
+      map3D.setConfigProperty('basemap', 'showRoadLabels', true);
+      // Optionally disable other labels for a cleaner map
+      map3D.setConfigProperty('basemap', 'showPlaceLabels', false);
+      map3D.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+      map3D.setConfigProperty('basemap', 'showTransitLabels', false);
 
       // Add markers
       spaces.forEach((space) => {
@@ -115,9 +122,9 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
       } else {
         const userMarkerEl = document.createElement('div');
         userMarkerEl.className = 'user-marker';
-        userMarkerEl.style.width = '20px';
-        userMarkerEl.style.height = '20px';
-        userMarkerEl.style.borderRadius = '50%';
+        userMarkerEl.style.width = '35px';
+        userMarkerEl.style.height = '35px';
+        userMarkerEl.style.borderRadius = '20%';
         userMarkerEl.style.backgroundColor = '#3b82f6';
         userMarkerEl.style.border = '3px solid white';
         userMarkerEl.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.5)';

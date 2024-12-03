@@ -120,6 +120,24 @@ const SAMPLE_SPACES: StudySpace[] = [
   },
   {
     id: "7",
+    name: "Samuel Alexander Building",
+    image: "/images/samuel-alexander.jpeg",
+    rating: 4.2,
+    nearestStation: "Oxford Road Station",
+    distance: 0.3,
+    coordinates: [-2.233602, 53.464441],
+    openingHours: {
+      "Monday": { open: "08:00", close: "22:00" },
+      "Tuesday": { open: "08:00", close: "22:00" },
+      "Wednesday": { open: "08:00", close: "22:00" },
+      "Thursday": { open: "08:00", close: "22:00" },
+      "Friday": { open: "08:00", close: "22:00" },
+      "Saturday": { open: "10:00", close: "18:00" },
+      "Sunday": { open: "10:00", close: "18:00" }
+    }
+  },
+  {
+    id: "8",
     name: "Joule Library",
     image: "/images/joule-library.jpg",
     rating: 4.1,
@@ -137,9 +155,9 @@ const SAMPLE_SPACES: StudySpace[] = [
     }
   },
   {
-    id: "8",
-    name: "Art and Archaeology Library",
-    image: "/images/art-library.jpg",
+    id: "9",
+    name: "Christie's Bistro",
+    image: "/images/christie-bistro.jpg",
     rating: 4.3,
     nearestStation: "Oxford Road Station",
     distance: 0.4,
@@ -161,7 +179,7 @@ const SAMPLE_SPACES: StudySpace[] = [
     rating: 4.2,
     nearestStation: "Oxford Road Station",
     distance: 0.3,
-    coordinates: [-2.233876, 53.466433],
+    coordinates: [-2.233602, 53.464441],
     openingHours: {
       "Monday": { open: "08:00", close: "22:00" },
       "Tuesday": { open: "08:00", close: "22:00" },
@@ -171,7 +189,26 @@ const SAMPLE_SPACES: StudySpace[] = [
       "Saturday": { open: "10:00", close: "18:00" },
       "Sunday": { open: "10:00", close: "18:00" }
     }
-  }
+  },
+  //add university place
+  {
+    id: "10",
+    name: "University Place",
+    image: "/images/university-place.jpeg",
+    rating: 4.2,
+    nearestStation: "Oxford Road Station",
+    distance: 0.3,
+    coordinates: [-2.233780, 53.466740],
+    openingHours: {
+      "Monday": { open: "08:00", close: "17:00" },
+      "Tuesday": { open: "08:00", close: "17:00" },
+      "Wednesday": { open: "08:00", close: "17:00" },
+      "Thursday": { open: "08:00", close: "17:00" },
+      "Friday": { open: "08:00", close: "17:00" },
+      "Saturday": { open: "08:00", close: "17:00" },
+      "Sunday": { open: "00:00", close: "00:00" }
+    }
+  },
 ];
 export default function StudySpacesPage() {
   const [selectedSpace, setSelectedSpace] = useState<string | null>(null)

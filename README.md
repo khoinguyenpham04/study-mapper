@@ -2,6 +2,43 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Here's a student-friendly overview of StudyMapper's key features:
+
+# 🎓 StudyMapper Features
+
+## 📍 Find Study Spaces Easily
+- See all study spaces around University of Manchester on an interactive map
+- Get real-time updates on which spaces are open right now
+- Check closing times so you don't arrive at a closed location
+
+## 📱 Smart Location Features 
+- Find out which study space is closest to you
+- Get walking distances to each location
+- See your nearest train/metro station for each space
+- Open directions directly in Google Maps
+
+## 🔍 Quick Search & Filters
+- Search for specific study spaces by name
+- Filter to show only currently open spaces
+- View study space ratings from other students
+- See detailed opening hours for each location
+
+## 💡 Smart Features
+- Real-time updates of open/closed status
+- Highlights the nearest study space to you
+- Works great on both phone and computer
+- Easy-to-read space details with photos
+
+## ⭐ Special Spaces
+Some notable locations include:
+- [Main Library](app/page.tsx) (24/7 access)
+- [Alan Gilbert Learning Commons](app/page.tsx) (24/7 access)
+- John Rylands Library (historic building)
+- AMBS (Business School library)
+- [Central Library](app/page.tsx) (city center location)
+
+*Designed to help University of Manchester students find their perfect study spot quickly and easily!*
+
 Here's a summary of the main features of the study space finder application:
 
 1. Interactive Map:
