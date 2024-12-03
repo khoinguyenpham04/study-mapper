@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Work_Sans } from 'next/font/google';
+import { GoogleAnalytics } from '@/components/analytics'
 
 // Initialize the fonts
 const inter = Inter({
@@ -27,6 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${workSans.variable} font-sans antialiased`}>
         {children}
+        <GoogleAnalytics 
+          GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!} 
+        />
       </body>
     </html>
   );

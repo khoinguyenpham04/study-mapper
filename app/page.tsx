@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/sidebar"
 import { LoadingScreen } from "@/components/loading-screen"
 import { StudySpace } from "@/types/study-space"
 import { RotateCcw, Menu, Crosshair } from 'lucide-react'
+import { trackEvent } from '@/lib/analytics'
 
 // Sample data - in a real app this would come from an API
 const SAMPLE_SPACES: StudySpace[] = [
@@ -259,6 +260,13 @@ export default function StudySpacesPage() {
 
   const handleSpaceSelect = (spaceId: string) => {
     setSelectedSpace(spaceId)
+    
+    // Track space selection
+    trackEvent({
+      action: 'select_space',
+      category: 'Space Interaction',
+      label: spaceId
+    })
   }
 
   const handleMapReload = () => {
@@ -271,6 +279,11 @@ export default function StudySpacesPage() {
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
+      // Track location request
+      trackEvent({
+        action: 'request_location',
+        category: 'User Location'
+      })
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserLocation([position.coords.longitude, position.coords.latitude])
