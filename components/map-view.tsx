@@ -30,10 +30,10 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/khonguyenpham/cm476m37000cp01r1aerh8dud', // Custom style
-      center: [-2.2374, 53.4668], // Manchester coordinates
-      zoom: 15,
-      pitch: 45,
-      bearing: 0,
+      center: [-2.234142, 53.464905], // Manchester coordinates
+      zoom: 16,
+      pitch: 70.50,
+      bearing: -19.20,
       antialias: true,
     })
 

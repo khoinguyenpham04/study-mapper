@@ -215,7 +215,7 @@ export default function StudySpacesPage() {
   const [selectedSpace, setSelectedSpace] = useState<string | null>(null)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [mapKey, setMapKey] = useState(0)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const [nearestSpace, setNearestSpace] = useState<StudySpace | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -230,11 +230,7 @@ export default function StudySpacesPage() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsSidebarOpen(true)
-      } else {
-        setIsSidebarOpen(false)
-      }
+      setIsSidebarOpen(true)
     }
 
     window.addEventListener('resize', handleResize)

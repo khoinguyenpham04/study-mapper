@@ -89,17 +89,19 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
                 </div>
                 <h1 className="text-white">StudyMapper</h1>
               </a>
-              <p className="text-sm text-purple-200 mt-1">by Noah Pham</p>
+              <p className="text-sm text-purple-200 mt-1">Find your perfect study spot</p>
             </div>
+            <div className="relative w-10 h-10">
             <Button
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="text-white hover:bg-purple-800/50 md:hidden"
+              className="text-white hover:bg-purple-800/50 md:hidden absolute inset-0 flex items-center justify-center"
             >
-              <X className="h-6 w-6" />
+              <X className="h-8 w-8 stroke-[3]" />
               <span className="sr-only">Close sidebar</span>
             </Button>
+            </div>
           </div>
           <Input
             placeholder="Search spaces..."
@@ -152,6 +154,20 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background-color: rgba(139, 92, 246, 0.7);
+        }
+      `}</style>
+      <style jsx>{`
+        .relative > button::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 32px;
+          height: 32px;
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          z-index: -1;
         }
       `}</style>
     </div>
