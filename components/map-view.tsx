@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { StudySpace } from '@/types/study-space'
@@ -21,6 +21,7 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
   const markersRef = useRef<{ [key: string]: mapboxgl.Marker }>({})
   const userMarkerRef = useRef<mapboxgl.Marker | null>(null)
 
+  // Initialize the map only once
   useEffect(() => {
     if (!mapContainer.current) return
 
@@ -40,14 +41,13 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
     map.current.on('load', () => {
       const map3D = map.current!
       
-      // Disable road labels
+      // Disable labels (adjust as required)
       map3D.setConfigProperty('basemap', 'showRoadLabels', true);
-      // Optionally disable other labels for a cleaner map
       map3D.setConfigProperty('basemap', 'showPlaceLabels', false);
       map3D.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
       map3D.setConfigProperty('basemap', 'showTransitLabels', false);
 
-      // Add markers
+      // Add markers (run once – subsequent updates handled in dedicated effect)
       spaces.forEach((space) => {
         const markerEl = document.createElement('div')
         markerEl.className = 'custom-marker'
@@ -86,22 +86,27 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
       }
       map.current?.remove()
     }
-  }, [spaces, onMarkerClick, currentTime])
+  }, []);  // <-- run once on mount
 
+  // Memoize selectedSpace so flyTo effect only runs when the actual selected space changes
+  const selectedSpace = useMemo(() => spaces.find(space => space.id === selectedSpaceId), [spaces, selectedSpaceId]);
+
+  // FlyTo selected space if changed and if center is not already near desired location
   useEffect(() => {
-    if (selectedSpaceId && map.current) {
-      const selectedSpace = spaces.find(space => space.id === selectedSpaceId)
-      if (selectedSpace) {
+    if (selectedSpace && map.current) {
+      const currentCenter = map.current.getCenter();
+      const [lng, lat] = selectedSpace.coordinates;
+      if (Math.abs(currentCenter.lng - lng) > 0.001 || Math.abs(currentCenter.lat - lat) > 0.001) {
         map.current.flyTo({
           center: selectedSpace.coordinates,
           zoom: 17,
-          duration: 2000
+          essential: true,
         })
       }
     }
-  }, [selectedSpaceId, spaces])
+  }, [selectedSpace])
 
-  // Update marker colors based on open/closed state
+  // Update marker colors based on open/closed state without causing re-mounting
   useEffect(() => {
     spaces.forEach((space) => {
       const marker = markersRef.current[space.id]
@@ -114,7 +119,7 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
     })
   }, [spaces, currentTime])
 
-  // Add or update user location marker
+  // Add or update user location marker imperatively
   useEffect(() => {
     if (userLocation && map.current) {
       if (userMarkerRef.current) {
@@ -137,11 +142,15 @@ export function MapView({ spaces, onMarkerClick, selectedSpaceId, currentTime, u
           .addTo(map.current);
       }
 
-      map.current.flyTo({
-        center: userLocation,
-        zoom: 15,
-        duration: 2000
-      });
+      // Only flyTo if the new user location differs from the current center
+      const currentCenter = map.current.getCenter();
+      if (Math.abs(currentCenter.lng - userLocation[0]) > 0.001 || Math.abs(currentCenter.lat - userLocation[1]) > 0.001) {
+        map.current.flyTo({
+          center: userLocation,
+          zoom: 15,
+          essential: true,
+        });
+      }
     }
   }, [userLocation]);
 

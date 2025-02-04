@@ -15,7 +15,8 @@ const workSans = Work_Sans({
 
 export const metadata: Metadata = {
   title: "StudyMapper",
-  description: "Find the best study spaces near you for the University of Manchester students",
+  description:
+    "Find the best study spaces near you for the University of Manchester students. Discover quiet study areas, group study rooms, and creative spaces designed to boost your productivity.",
   manifest: "/manifest.json",
   icons: {
     apple: [
@@ -31,6 +32,45 @@ export const metadata: Metadata = {
     capable: true,
     title: "StudyMapper",
     statusBarStyle: "black-translucent"
+  },
+  keywords: [
+    "Study spaces",
+    "University of Manchester",
+    "Study rooms",
+    "Group study",
+    "Quiet study areas",
+    "Academic spaces"
+  ],
+  authors: [
+    {
+      name: "Noah Pham phamtrankhoinguyen",
+      url: "https://www.studymapper.vercel.app"
+    }
+  ],
+  creator: "StudyMapper Team",
+  openGraph: {
+    type: "website",
+    url: "https://www.studymapper.vercel.app",
+    title: "StudyMapper - Find the Best Study Spaces Near You",
+    description:
+      "Discover and navigate the best study spaces around the University of Manchester all in one platform.",
+    siteName: "StudyMapper",
+    images: [
+      {
+        url: "https://studymapper.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "StudyMapper preview"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "StudyMapper - Best Study Spaces Near You",
+    description:
+      "Find your ideal study spot near the University of Manchester with StudyMapper. Perfect for solo and group sessions.",
+    images: ["https://studymapper.com/twitter-image.jpg"],
+    creator: "@StudyMapper"
   }
 };
 
