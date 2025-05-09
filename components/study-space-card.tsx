@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Star, Clock, MapPin, Train, Ruler } from 'lucide-react'
+import { Tag, Clock, MapPin, Train, Ruler } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { StudySpace } from "@/types/study-space"
 import {
@@ -46,11 +46,11 @@ export function StudySpaceCard({ space, onClick, isOpen, currentTime, distance, 
         )}
       </div>
       <div className="p-4 space-y-2">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-lg text-purple-50">{space.name}</h3>
-          <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm text-yellow-400">{space.rating}</span>
+        <div className="flex items-center justify-between mb-1.5">
+          <h3 className="font-medium text-xl tracking-tight text-white">{space.name}</h3>
+          <div className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center gap-1.5 transition-all hover:bg-white/15">
+            <Tag className="w-3 h-3 text-purple-200" />
+            <span className="text-xs font-medium text-purple-100">{space.category}</span>
           </div>
         </div>
         <div className="space-y-1 text-sm text-purple-200/90">

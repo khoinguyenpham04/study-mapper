@@ -2,7 +2,7 @@ export interface StudySpace {
   id: string
   name: string
   image: string
-  rating: number
+  category: 'Quiet spots' | 'On campus' | 'Cosy Campus Spaces' | 'Cafés'
   nearestStation: string
   distance: number
   coordinates: [number, number]
