@@ -72,9 +72,9 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
     )
 
   return (
-    <div className={`fixed inset-y-4 left-0 z-50 w-[calc(95%-2rem)] max-w-[400px] sm:w-[420px] bg-gradient-to-b from-purple-900/10 to-purple-800/20 backdrop-blur-lg backdrop-filter border border-purple-500/10 shadow-2xl rounded-2xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-4' : '-translate-x-full'}`}>
+    <div className={`fixed inset-y-4 left-0 z-50 w-[calc(95%-2rem)] max-w-[480px] sm:w-[480px] bg-gradient-to-b from-purple-900/10 to-purple-800/20 backdrop-blur-lg backdrop-filter border border-purple-500/10 shadow-2xl rounded-2xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-4' : '-translate-x-full'}`}>
       <div className="flex flex-col h-full bg-white/5 overflow-hidden">
-        <div className="p-4 sm:p-6 border-b border-purple-500/10 space-y-4 bg-purple-900/20 backdrop-blur-md">
+        <div className="p-4 sm:p-5 border-b border-purple-500/10 space-y-4 bg-purple-900/20 backdrop-blur-md">
           <div className="flex justify-between items-center">
             <div>
               <a
@@ -121,7 +121,7 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
             <span className="text-sm text-purple-100/80 font-bold">{formattedTime}</span>
           </div>
         </div>
-        <div className="flex-1 overflow-auto p-4 sm:p-6 space-y-4 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
+        <div className="flex-1 overflow-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
           {filteredSpaces.map((space) => (
             <StudySpaceCard
               key={space.id}
