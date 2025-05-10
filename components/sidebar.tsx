@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Input } from "@/components/ui/input"
 import { StudySpaceCard } from "@/components/study-space-card"
 import { StudySpace } from "@/types/study-space"
@@ -12,6 +12,7 @@ import { SpaceFilter } from "@/components/space-filter"; // Added import
 interface SidebarProps {
   spaces: StudySpace[]
   onSpaceSelect: (spaceId: string) => void
+  selectedSpaceId: string | null; // Added selectedSpaceId prop
   currentTime: Date
   isOpen: boolean
   onClose: () => void
@@ -19,9 +20,10 @@ interface SidebarProps {
   nearestSpace: StudySpace | null
 }
 
-export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, userLocation, nearestSpace }: SidebarProps) {
+export function Sidebar({ spaces, onSpaceSelect, selectedSpaceId, currentTime, isOpen, onClose, userLocation, nearestSpace }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [showOpenOnly, setShowOpenOnly] = useState(false)
+  const scrollContainerRef = useRef<HTMLDivElement>(null); // Ref for the scrollable container
   const [activeFilters, setActiveFilters] = useState<{ categories: string[]; stations: string[] }>({ categories: [], stations: [] }); // Added state for filters
 
   const formattedTime = new Intl.DateTimeFormat('en-GB', {
@@ -79,6 +81,15 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
       (activeFilters.stations.length === 0 || activeFilters.stations.includes(space.nearestStation)) // Added station filter logic
     )
 
+  useEffect(() => {
+    if (selectedSpaceId && scrollContainerRef.current) {
+      const cardElement = document.getElementById(selectedSpaceId);
+      if (cardElement) {
+        cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [selectedSpaceId]);
+
   return (
     <div className={`fixed inset-y-4 left-0 z-50 w-[calc(95%-2rem)] max-w-[480px] sm:w-[480px] bg-gradient-to-b from-purple-900/10 to-purple-800/20 backdrop-blur-lg backdrop-filter border border-purple-500/10 shadow-2xl rounded-2xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-4' : '-translate-x-full'}`}>
       <div className="flex flex-col h-full bg-white/5 overflow-hidden">
@@ -133,9 +144,10 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
           {/* Moved formattedTime display to be on its own line or integrated differently if needed */}
           <div className="text-right text-sm text-purple-100/80 font-bold">{formattedTime}</div>
         </div>
-        <div className="flex-1 overflow-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
           {filteredSpaces.map((space) => (
             <StudySpaceCard
+              id={space.id} // Pass the id prop here
               key={space.id}
               space={space}
               onClick={() => handleSpaceClick(space.id)}

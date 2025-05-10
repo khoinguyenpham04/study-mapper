@@ -110,6 +110,7 @@ export default function StudySpacesPage() {
       <Sidebar
         spaces={SAMPLE_SPACES}
         onSpaceSelect={handleSpaceSelect}
+        selectedSpaceId={selectedSpace} // Pass selectedSpace here
         currentTime={currentTime}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}

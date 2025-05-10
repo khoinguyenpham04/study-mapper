@@ -1,7 +1,9 @@
 import Image from "next/image"
-import { Tag, Clock, MapPin, Train, Ruler } from 'lucide-react'
+import { Clock, MapPin, Train, Ruler } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { StudySpace } from "@/types/study-space"
+import { getOpenUntil } from "@/utils/timeUtils"
+import { getCategoryIcon } from '@/utils/iconMap';
 import {
   Accordion,
   AccordionContent,
@@ -9,23 +11,25 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { getOpenUntil } from "@/utils/timeUtils"
 
 interface StudySpaceCardProps {
-  space: StudySpace
-  onClick?: () => void
-  isOpen: boolean
-  currentTime: Date
-  distance?: number
-  isNearest?: boolean
+  space: StudySpace;
+  onClick: () => void;
+  isOpen: boolean;
+  currentTime: Date;
+  distance?: number;
+  isNearest?: boolean;
+  id?: string; // Added id prop
 }
 
-export function StudySpaceCard({ space, onClick, isOpen, currentTime, distance, isNearest }: StudySpaceCardProps) {
+export function StudySpaceCard({ space, onClick, isOpen, currentTime, distance, isNearest, id }: StudySpaceCardProps) {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${space.coordinates[1]},${space.coordinates[0]}`
   const openUntil = getOpenUntil(space, currentTime)
+  const IconComponent = getCategoryIcon(space.category); // Get the icon component
 
   return (
     <Card 
+      id={id} // Add the id prop here
       className={`overflow-hidden cursor-pointer transition-all duration-300 bg-purple-800/30 backdrop-blur-md border-2 ${
   isNearest ? 'border-purple-500 shadow-lg shadow-purple-500/50' : 'border-purple-500/30'
 } hover:bg-purple-700/40 rounded-lg`}
@@ -49,8 +53,10 @@ export function StudySpaceCard({ space, onClick, isOpen, currentTime, distance, 
         <div className="flex items-center justify-between mb-1.5">
           <h3 className="font-medium text-xl tracking-tight text-white">{space.name}</h3>
           <div className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center gap-1.5 transition-all hover:bg-white/15">
-            <Tag className="w-3 h-3 text-purple-200" />
-            <span className="text-xs font-medium text-purple-100">{space.category}</span>
+            <div className="flex items-center text-sm text-white">
+              <IconComponent className="w-4 h-4 mr-1 text-purple-200" /> {/* Use dynamic icon */}
+              {space.category}
+            </div>
           </div>
         </div>
         <div className="space-y-1 text-sm text-purple-200/90">
