@@ -7,6 +7,7 @@ import { X, Map } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { SpaceFilter } from "@/components/space-filter"; // Added import
 
 interface SidebarProps {
   spaces: StudySpace[]
@@ -21,6 +22,7 @@ interface SidebarProps {
 export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, userLocation, nearestSpace }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [showOpenOnly, setShowOpenOnly] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<{ categories: string[]; stations: string[] }>({ categories: [], stations: [] }); // Added state for filters
 
   const formattedTime = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/London',
@@ -59,6 +61,10 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
     return distance
   }
 
+  const handleApplyFilters = (filters: { categories: string[]; stations: string[] }) => {
+    setActiveFilters(filters);
+  }; // Added handler for applying filters
+
   const sortedSpaces = userLocation
     ? [...spaces].sort((a, b) => 
         calculateDistance(userLocation, a.coordinates) - calculateDistance(userLocation, b.coordinates)
@@ -68,7 +74,9 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
   const filteredSpaces = sortedSpaces
     .filter((space) =>
       space.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (!showOpenOnly || isSpaceOpen(space, currentTime))
+      (!showOpenOnly || isSpaceOpen(space, currentTime)) &&
+      (activeFilters.categories.length === 0 || activeFilters.categories.includes(space.category)) && // Added category filter logic
+      (activeFilters.stations.length === 0 || activeFilters.stations.includes(space.nearestStation)) // Added station filter logic
     )
 
   return (
@@ -118,8 +126,12 @@ export function Sidebar({ spaces, onSpaceSelect, currentTime, isOpen, onClose, u
               />
               <Label htmlFor="open-filter" className="text-sm text-white">Show open only</Label>
             </div>
-            <span className="text-sm text-purple-100/80 font-bold">{formattedTime}</span>
+            {/* Added SpaceFilter component */}
+            <SpaceFilter allSpaces={spaces} onApplyFilters={handleApplyFilters} /> 
+            {/* <span className="text-sm text-purple-100/80 font-bold">{formattedTime}</span> */}
           </div>
+          {/* Moved formattedTime display to be on its own line or integrated differently if needed */}
+          <div className="text-right text-sm text-purple-100/80 font-bold">{formattedTime}</div>
         </div>
         <div className="flex-1 overflow-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
           {filteredSpaces.map((space) => (
