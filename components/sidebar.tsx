@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { StudySpaceCard } from "@/components/study-space-card"
 import { StudySpace } from "@/types/study-space"
 import { isSpaceOpen } from "@/utils/timeUtils"
-import { X, Map } from 'lucide-react'
+import { X, Map, Columns2, Rows } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -25,6 +25,26 @@ export function Sidebar({ spaces, onSpaceSelect, selectedSpaceId, currentTime, i
   const [showOpenOnly, setShowOpenOnly] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null); // Ref for the scrollable container
   const [activeFilters, setActiveFilters] = useState<{ categories: string[]; stations: string[] }>({ categories: [], stations: [] }); // Added state for filters
+  
+  // Initialize layout from localStorage or default to 'one-column'
+  const [layoutType, setLayoutType] = useState<'one-column' | 'two-columns'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedLayout = localStorage.getItem('studyMapperLayout');
+      // Handle potential legacy 'three-columns' value from localStorage
+      if (savedLayout === 'three-columns') {
+        return 'two-columns';
+      }
+      return (savedLayout as 'one-column' | 'two-columns') || 'one-column';
+    }
+    return 'one-column';
+  });
+  
+  // Save layout preference to localStorage when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('studyMapperLayout', layoutType);
+    }
+  }, [layoutType]);
 
   const formattedTime = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/London',
@@ -141,22 +161,61 @@ export function Sidebar({ spaces, onSpaceSelect, selectedSpaceId, currentTime, i
             <SpaceFilter allSpaces={spaces} onApplyFilters={handleApplyFilters} /> 
             {/* <span className="text-sm text-purple-100/80 font-bold">{formattedTime}</span> */}
           </div>
-          {/* Moved formattedTime display to be on its own line or integrated differently if needed */}
-          <div className="text-right text-sm text-purple-100/80 font-bold">{formattedTime}</div>
+
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 bg-purple-800/30 rounded-lg p-1 border border-purple-500/20">
+              <Button 
+                size="icon" 
+                variant="ghost" 
+                className={`w-8 h-8 rounded transition-all duration-200 ${
+                  layoutType === 'one-column' 
+                    ? 'bg-purple-600 shadow-sm shadow-purple-500/50' 
+                    : 'hover:bg-purple-700/30'
+                }`}
+                onClick={() => setLayoutType('one-column')}
+                title="Single column layout"
+              >
+                <Rows className="w-4 h-4 text-white" />
+              </Button>
+              <Button 
+                size="icon" 
+                variant="ghost" 
+                className={`w-8 h-8 rounded transition-all duration-200 ${
+                  layoutType === 'two-columns' 
+                    ? 'bg-purple-600 shadow-sm shadow-purple-500/50' 
+                    : 'hover:bg-purple-700/30'
+                }`} 
+                onClick={() => setLayoutType('two-columns')}
+                title="Two columns layout"
+              >
+                <Columns2 className="w-4 h-4 text-white" />
+              </Button>
+            </div>
+          </div>
+            <div className="text-right text-sm text-purple-100/80 font-bold">{formattedTime}</div>
+          </div>
         </div>
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto p-4 sm:p-5 space-y-4 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
-          {filteredSpaces.map((space) => (
-            <StudySpaceCard
-              id={space.id} // Pass the id prop here
-              key={space.id}
-              space={space}
-              onClick={() => handleSpaceClick(space.id)}
-              isOpen={isSpaceOpen(space, currentTime)}
-              currentTime={currentTime}
-              distance={userLocation ? calculateDistance(userLocation, space.coordinates) : undefined}
-              isNearest={space.id === nearestSpace?.id}
-            />
-          ))}
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto p-4 sm:p-5 custom-scrollbar bg-purple-800/5 backdrop-blur-sm">
+          <div 
+            className={`
+              ${layoutType === 'one-column' ? 'space-y-4' : 'grid gap-4 grid-cols-2'} 
+            `}
+          >
+            {filteredSpaces.map((space) => (
+              <StudySpaceCard
+                id={space.id}
+                key={space.id}
+                space={space}
+                onClick={() => handleSpaceClick(space.id)}
+                isOpen={isSpaceOpen(space, currentTime)}
+                currentTime={currentTime}
+                distance={userLocation ? calculateDistance(userLocation, space.coordinates) : undefined}
+                isNearest={space.id === nearestSpace?.id}
+                layoutType={layoutType}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <style jsx global>{`
